@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ankith S Kashyap — Embedded Software Engineer</title>
+<meta name="description" content="Portfolio of Ankith S Kashyap — Embedded Software Engineer specializing in real-time Embedded C and register-level driver development on TI C2000.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+
+<style>
+  html { background: #0A0E14; }
+  body {
+    background-color: #0A0E14;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  ::selection { background: #4FA3FF; color: #0A0E14; }
+
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: #0A0E14; }
+  ::-webkit-scrollbar-thumb { background: #1E2733; border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2A3644; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .caret {
+    display: inline-block;
+    width: 3px;
+    background: #4FA3FF;
+    margin-left: 4px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .trace-path {
+    stroke-dasharray: 900;
+    stroke-dashoffset: 900;
+    animation: draw 2.4s ease-out forwards 0.3s;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  .bit {
+    animation: flip 3.6s ease-in-out infinite;
+  }
+  @keyframes flip {
+    0%, 40% { opacity: 1; }
+    45%, 55% { opacity: 0.15; }
+    60%, 100% { opacity: 1; }
+  }
+
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -6px;
+    height: 1px;
+    background: #4FA3FF;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .nav-link:hover::after { transform: scaleX(1); }
+
+  .card-hover { transition: border-color 0.25s ease, transform 0.25s ease; }
+  .card-hover:hover { border-color: #4FA3FF; transform: translateY(-3px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .trace-path, .bit, .caret, .card-hover {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      stroke-dashoffset: 0 !important;
+    }
+  }
+</style>
+</head>
+
+<body class="font-sans text-ink antialiased">
+
+<!-- ============ NAV ============ -->
+<header class="fixed top-0 inset-x-0 z-50 backdrop-blur bg-base/80 border-b border-line">
+  <nav class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between font-mono">
+    <a href="#top" class="text-sm sm:text-base font-semibold text-ink tracking-tight">
+      ASK<span class="text-sig">.</span>dev
+    </a>
+
+    <ul class="hidden md:flex items-center gap-8 text-[13px] text-muted">
+      <li><a href="#about" class="nav-link hover:text-ink"><span class="text-sig">0x00</span> ABOUT</a></li>
+      <li><a href="#skills" class="nav-link hover:text-ink"><span class="text-sig">0x01</span> SKILLS</a></li>
+      <li><a href="#experience" class="nav-link hover:text-ink"><span class="text-sig">0x02</span> EXPERIENCE</a></li>
+      <li><a href="#projects" class="nav-link hover:text-ink"><span class="text-sig">0x03</span> PROJECTS</a></li>
+      <li><a href="#contact" class="nav-link hover:text-ink"><span class="text-sig">0x04</span> CONTACT</a></li>
+    </ul>
+
+    <a href="#contact" class="hidden md:inline-block text-[13px] font-mono px-4 py-2 border border-sig/50 text-sig rounded hover:bg-sig hover:text-base transition-colors">
+      GET_IN_TOUCH()
+    </a>
+
+    <button id="menuBtn" aria-label="Open menu" aria-expanded="false" class="md:hidden text-ink p-2 -mr-2">
+      <svg id="iconMenu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg id="iconClose" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="hidden"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </nav>
+
+  <div id="mobileMenu" class="hidden md:hidden border-t border-line bg-base font-mono text-sm">
+    <ul class="flex flex-col px-5 py-3 gap-1 text-muted">
+      <li><a href="#about" class="mobile-link block py-2.5"><span class="text-sig">0x00</span> ABOUT</a></li>
+      <li><a href="#skills" class="mobile-link block py-2.5"><span class="text-sig">0x01</span> SKILLS</a></li>
+      <li><a href="#experience" class="mobile-link block py-2.5"><span class="text-sig">0x02</span> EXPERIENCE</a></li>
+      <li><a href="#projects" class="mobile-link block py-2.5"><span class="text-sig">0x03</span> PROJECTS</a></li>
+      <li><a href="#contact" class="mobile-link block py-2.5"><span class="text-sig">0x04</span> CONTACT</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="top" class="max-w-6xl mx-auto px-5 sm:px-8 pt-36 pb-24 grid lg:grid-cols-[1.1fr_0.9fr] gap-14 items-center">
+  <div class="reveal">
+    <p class="font-mono text-xs sm:text-sm text-amber tracking-widest mb-5">// EMBEDDED_SOFTWARE_ENGINEER.h</p>
+    <h1 class="text-3xl sm:text-5xl font-mono font-bold leading-tight tracking-tight text-ink">
+      Ankith S Kashyap
+    </h1>
+    <h2 id="typedHeadline" class="mt-4 text-base sm:text-xl text-muted font-mono min-h-[3.5rem] sm:min-h-[2rem]"></h2>
+
+    <p class="mt-6 text-sm sm:text-base text-muted leading-relaxed max-w-xl">
+      EEE graduate with hands-on experience writing real-time, interrupt-driven embedded C
+      firmware and configuring peripherals at the register level on the TI TMS320F28379D
+      (C2000 DSP). I build closed-loop control firmware and manage peripherals under hard
+      real-time constraints, with a strong foundation in hardware/firmware debugging.
+    </p>
+
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="#projects" class="px-5 py-2.5 rounded bg-sig text-base font-mono text-sm font-semibold hover:bg-white transition-colors">View Projects</a>
+      <a href="#contact" class="px-5 py-2.5 rounded border border-line text-ink font-mono text-sm hover:border-sig transition-colors">Contact</a>
+    </div>
+
+    <div class="mt-10 flex items-center gap-5 text-muted">
+      <a href="https://github.com/Ankith23" target="_blank" rel="noopener" aria-label="GitHub" class="hover:text-ink transition-colors">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.44 3.44 10.05 8.2 11.68.6.11.82-.27.82-.6 0-.29-.01-1.06-.02-2.08-3.34.75-4.04-1.65-4.04-1.65-.55-1.43-1.34-1.82-1.34-1.82-1.09-.77.08-.75.08-.75 1.2.09 1.84 1.27 1.84 1.27 1.07 1.87 2.8 1.33 3.49 1.02.11-.79.42-1.33.76-1.64-2.67-.31-5.47-1.38-5.47-6.13 0-1.35.47-2.46 1.24-3.32-.12-.31-.54-1.57.12-3.28 0 0 1.01-.33 3.3 1.27.96-.27 1.98-.41 3-.42 1.02.01 2.04.15 3 .42 2.29-1.6 3.3-1.27 3.3-1.27.66 1.71.24 2.97.12 3.28.77.86 1.24 1.97 1.24 3.32 0 4.76-2.81 5.82-5.49 6.12.43.38.81 1.14.81 2.3 0 1.66-.02 3-.02 3.41 0 .33.22.72.83.6C20.57 22.34 24 17.73 24 12.3 24 5.5 18.63 0 12 0z"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/ankith-kashyap-226301248/" target="_blank" rel="noopener" aria-label="LinkedIn" class="hover:text-ink transition-colors">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.11 20.45H3.56V9h3.55v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0z"/></svg>
+      </a>
+      <a href="mailto:ankithskashyap23@gmail.com" aria-label="Email" class="hover:text-ink transition-colors">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m4 6 8 7 8-7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Oscilloscope signature panel -->
+  <div class="reveal">
+    <div class="relative rounded-lg border border-line bg-surface p-5 sm:p-6 shadow-[0_0_40px_-15px_rgba(79,163,255,0.35)]">
+      <div class="flex items-center justify-between mb-4 font-mono text-[11px] text-muted">
+        <span class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-trace"></span> CH1 · SPWM_OUT
+        </span>
+        <span>DUTY: <span class="text-amber">62%</span> &nbsp;|&nbsp; F: <span class="text-sig">10.0 Hz</span></span>
+      </div>
+
+      <svg viewBox="0 0 400 140" class="w-full h-auto">
+        <defs>
+          <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1E2733" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="400" height="140" fill="#0D131C" rx="4"/>
+        <rect width="400" height="140" fill="url(#grid)" rx="4"/>
+        <line x1="0" y1="70" x2="400" y2="70" stroke="#2A3644" stroke-width="1" stroke-dasharray="4 3"/>
+        <path class="trace-path" d="M0,105 L20,105 L20,35 L60,35 L60,105 L100,105 L100,35 L140,35 L140,105 L180,105 L180,35 L220,35 L220,105 L260,105 L260,35 L300,35 L300,105 L340,105 L340,35 L380,35 L380,105 L400,105"
+          fill="none" stroke="#6BCB77" stroke-width="2.5" stroke-linejoin="round"/>
+      </svg>
+
+      <div class="mt-5 grid grid-cols-4 gap-2 font-mono text-[11px]">
+        <div class="bg-surface2 border border-line rounded px-2 py-2 text-center">
+          <div class="text-muted mb-1">EPWM1</div>
+          <div class="bit text-sig font-bold">1</div>
+        </div>
+        <div class="bg-surface2 border border-line rounded px-2 py-2 text-center">
+          <div class="text-muted mb-1">EQEP1</div>
+          <div class="bit text-amber font-bold" style="animation-delay:.6s">0</div>
+        </div>
+        <div class="bg-surface2 border border-line rounded px-2 py-2 text-center">
+          <div class="text-muted mb-1">ADC_A0</div>
+          <div class="bit text-trace font-bold" style="animation-delay:1.2s">1</div>
+        </div>
+        <div class="bg-surface2 border border-line rounded px-2 py-2 text-center">
+          <div class="text-muted mb-1">GPIO34</div>
+          <div class="bit text-ink font-bold" style="animation-delay:1.8s">0</div>
+        </div>
+      </div>
+
+      <p class="mt-4 text-[11px] font-mono text-faint leading-relaxed">
+        TMS320F28379D &middot; register-level peripheral config &middot; no HAL
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="max-w-6xl mx-auto px-5 sm:px-8 py-20 border-t border-line">
+  <div class="reveal">
+    <p class="font-mono text-xs text-sig mb-2">0x00 // ABOUT</p>
+    <h2 class="text-2xl sm:text-3xl font-mono font-bold text-ink mb-8">About</h2>
+  </div>
+
+  <div class="reveal grid md:grid-cols-[1fr_auto] gap-10 items-start">
+    <p class="text-muted leading-relaxed text-sm sm:text-base max-w-2xl">
+      I graduated in Electrical &amp; Electronics Engineering and spend most of my time writing
+      bare-metal Embedded C — the kind of code that has to run on time, every time. My focus is
+      the boundary between hardware and firmware: setting up peripherals directly through
+      registers instead of vendor HALs, writing interrupt-driven control loops, and debugging
+      with an oscilloscope in hand rather than guessing from a log file. Most of my project work
+      has centered on motor drives and power electronics on the TI C2000 DSP, where timing
+      mistakes show up immediately as a burnt MOSFET rather than a stack trace.
+    </p>
+    <div class="font-mono text-xs text-muted bg-surface border border-line rounded-lg p-5 w-full md:w-72">
+      <p class="text-sig mb-3">struct engineer_t {</p>
+      <p class="pl-4">degree: <span class="text-ink">"B.E. EEE"</span>;</p>
+      <p class="pl-4">core_mcu: <span class="text-ink">"F28379D"</span>;</p>
+      <p class="pl-4">language: <span class="text-ink">"Embedded C"</span>;</p>
+      <p class="pl-4">status: <span class="text-amber">"open_to_work"</span>;</p>
+      <p class="text-sig">};</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills" class="max-w-6xl mx-auto px-5 sm:px-8 py-20 border-t border-line">
+  <div class="reveal">
+    <p class="font-mono text-xs text-sig mb-2">0x01 // SKILLS</p>
+    <h2 class="text-2xl sm:text-3xl font-mono font-bold text-ink mb-10">Skills</h2>
+  </div>
+
+  <div class="grid sm:grid-cols-3 gap-6">
+    <div class="reveal rounded-lg border border-line bg-surface p-6 card-hover">
+      <p class="font-mono text-xs text-amber mb-4">01 // PROGRAMMING</p>
+      <ul class="space-y-2.5 text-sm text-ink">
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> Embedded C</li>
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> C</li>
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> C++</li>
+      </ul>
+    </div>
+
+    <div class="reveal rounded-lg border border-line bg-surface p-6 card-hover">
+      <p class="font-mono text-xs text-amber mb-4">02 // EMBEDDED SYSTEMS</p>
+      <ul class="space-y-2.5 text-sm text-ink">
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> Firmware Development</li>
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> Real-Time Systems</li>
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> Register-Level Programming</li>
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> Interrupt-Driven Firmware</li>
+      </ul>
+    </div>
+
+    <div class="reveal rounded-lg border border-line bg-surface p-6 card-hover">
+      <p class="font-mono text-xs text-amber mb-4">03 // HARDWARE &amp; TOOLS</p>
+      <ul class="space-y-2.5 text-sm text-ink">
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> TI TMS320F28379D</li>
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> Power Electronics</li>
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> PCB Design (KiCad)</li>
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> Code Composer Studio</li>
+        <li class="flex items-center gap-2"><span class="text-sig font-mono">&gt;</span> Oscilloscopes / Debugging</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience" class="max-w-6xl mx-auto px-5 sm:px-8 py-20 border-t border-line">
+  <div class="reveal">
+    <p class="font-mono text-xs text-sig mb-2">0x02 // EXPERIENCE</p>
+    <h2 class="text-2xl sm:text-3xl font-mono font-bold text-ink mb-10">Experience</h2>
+  </div>
+
+  <div class="reveal relative pl-8 border-l border-line">
+    <span class="absolute -left-[7px] top-1.5 w-3.5 h-3.5 rounded-full bg-sig ring-4 ring-base"></span>
+    <div class="rounded-lg border border-line bg-surface p-6 card-hover">
+      <div class="flex flex-wrap items-baseline justify-between gap-2 mb-1">
+        <h3 class="font-mono text-lg font-semibold text-ink">Embedded Systems &amp; Motor Control Intern</h3>
+        <span class="font-mono text-xs text-muted">CEMETA</span>
+      </div>
+      <p class="text-sm text-muted mb-4">Feb 2025 – May 2025</p>
+      <ul class="space-y-2.5 text-sm text-ink leading-relaxed">
+        <li class="flex gap-2.5">
+          <span class="text-amber font-mono mt-0.5">→</span>
+          Wrote real-time firmware for closed-loop vector control of a 4-pole induction motor.
+        </li>
+        <li class="flex gap-2.5">
+          <span class="text-amber font-mono mt-0.5">→</span>
+          Managed state transitions between control modes under strict timing constraints on the TMS320F28379D.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects" class="max-w-6xl mx-auto px-5 sm:px-8 py-20 border-t border-line">
+  <div class="reveal">
+    <p class="font-mono text-xs text-sig mb-2">0x03 // PROJECTS</p>
+    <h2 class="text-2xl sm:text-3xl font-mono font-bold text-ink mb-10">Projects</h2>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-6">
+    <!-- Project 1 -->
+    <div class="reveal rounded-lg border border-line bg-surface p-6 flex flex-col card-hover">
+      <p class="font-mono text-[11px] text-faint mb-3">PROJECT / 01</p>
+      <h3 class="font-mono text-base font-semibold text-ink mb-3">V/f Control of Three-Phase Inverter</h3>
+      <p class="text-sm text-muted leading-relaxed flex-1">
+        Interrupt-driven SPWM generation for a three-phase inverter, with ADC and timer
+        peripherals integrated directly to hold a constant volts-per-hertz ratio across the
+        motor's operating range.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-2">
+        <span class="font-mono text-[11px] px-2 py-1 rounded border border-line text-muted">TMS320F28379D</span>
+        <span class="font-mono text-[11px] px-2 py-1 rounded border border-line text-muted">Embedded C</span>
+        <span class="font-mono text-[11px] px-2 py-1 rounded border border-line text-muted">SPWM</span>
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="reveal rounded-lg border border-line bg-surface p-6 flex flex-col card-hover">
+      <p class="font-mono text-[11px] text-faint mb-3">PROJECT / 02</p>
+      <h3 class="font-mono text-base font-semibold text-ink mb-3">PMSM Motor Drive Firmware</h3>
+      <p class="text-sm text-muted leading-relaxed flex-1">
+        Register-level peripheral configuration for a motor drive that switches control mode
+        from BLDC six-step commutation to sinusoidal PMSM drive once the motor crosses a set
+        frequency threshold.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-2">
+        <span class="font-mono text-[11px] px-2 py-1 rounded border border-line text-muted">C2000 DSP</span>
+        <span class="font-mono text-[11px] px-2 py-1 rounded border border-line text-muted">ePWM / eQEP</span>
+        <span class="font-mono text-[11px] px-2 py-1 rounded border border-line text-muted">Bare Metal</span>
+      </div>
+      <a href="https://github.com/Ankith23/PMSM-Motor-Drive" target="_blank" rel="noopener"
+         class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs text-sig hover:underline">
+        View on GitHub
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
+      </a>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="reveal rounded-lg border border-line bg-surface p-6 flex flex-col card-hover">
+      <p class="font-mono text-[11px] text-faint mb-3">PROJECT / 03</p>
+      <h3 class="font-mono text-base font-semibold text-ink mb-3">Boost Converter Design</h3>
+      <p class="text-sm text-muted leading-relaxed flex-1">
+        Hardware build of a boost converter using the SG3524 PWM controller, from schematic
+        and PCB layout through component soldering and bring-up on the bench.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-2">
+        <span class="font-mono text-[11px] px-2 py-1 rounded border border-line text-muted">SG3524</span>
+        <span class="font-mono text-[11px] px-2 py-1 rounded border border-line text-muted">PCB / KiCad</span>
+        <span class="font-mono text-[11px] px-2 py-1 rounded border border-line text-muted">Power Electronics</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="max-w-6xl mx-auto px-5 sm:px-8 py-20 border-t border-line">
+  <div class="reveal">
+    <p class="font-mono text-xs text-sig mb-2">0x04 // CONTACT</p>
+    <h2 class="text-2xl sm:text-3xl font-mono font-bold text-ink mb-4">Contact</h2>
+    <p class="text-muted text-sm sm:text-base max-w-xl mb-10">
+      Open to embedded software and firmware roles. The fastest way to reach me is email.
+    </p>
+  </div>
+
+  <div class="reveal grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <a href="mailto:ankithskashyap23@gmail.com" class="rounded-lg border border-line bg-surface p-5 card-hover flex flex-col gap-3">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="text-sig"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m4 6 8 7 8-7"/></svg>
+      <div>
+        <p class="font-mono text-xs text-muted mb-1">EMAIL</p>
+        <p class="text-sm text-ink break-all">ankithskashyap23@gmail.com</p>
+      </div>
+    </a>
+
+    <a href="tel:+910000000000" class="rounded-lg border border-line bg-surface p-5 card-hover flex flex-col gap-3">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="text-sig"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <div>
+        <p class="font-mono text-xs text-muted mb-1">PHONE</p>
+        <p class="text-sm text-ink">+91 XXXXX XXXXX</p>
+      </div>
+    </a>
+
+    <a href="https://github.com/Ankith23" target="_blank" rel="noopener" class="rounded-lg border border-line bg-surface p-5 card-hover flex flex-col gap-3">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-sig"><path d="M12 0C5.37 0 0 5.5 0 12.3c0 5.44 3.44 10.05 8.2 11.68.6.11.82-.27.82-.6 0-.29-.01-1.06-.02-2.08-3.34.75-4.04-1.65-4.04-1.65-.55-1.43-1.34-1.82-1.34-1.82-1.09-.77.08-.75.08-.75 1.2.09 1.84 1.27 1.84 1.27 1.07 1.87 2.8 1.33 3.49 1.02.11-.79.42-1.33.76-1.64-2.67-.31-5.47-1.38-5.47-6.13 0-1.35.47-2.46 1.24-3.32-.12-.31-.54-1.57.12-3.28 0 0 1.01-.33 3.3 1.27.96-.27 1.98-.41 3-.42 1.02.01 2.04.15 3 .42 2.29-1.6 3.3-1.27 3.3-1.27.66 1.71.24 2.97.12 3.28.77.86 1.24 1.97 1.24 3.32 0 4.76-2.81 5.82-5.49 6.12.43.38.81 1.14.81 2.3 0 1.66-.02 3-.02 3.41 0 .33.22.72.83.6C20.57 22.34 24 17.73 24 12.3 24 5.5 18.63 0 12 0z"/></svg>
+      <div>
+        <p class="font-mono text-xs text-muted mb-1">GITHUB</p>
+        <p class="text-sm text-ink">github.com/Ankith23</p>
+      </div>
+    </a>
+
+    <a href="https://www.linkedin.com/in/ankith-kashyap-226301248/" target="_blank" rel="noopener" class="rounded-lg border border-line bg-surface p-5 card-hover flex flex-col gap-3">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-sig"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.11 20.45H3.56V9h3.55v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0z"/></svg>
+      <div>
+        <p class="font-mono text-xs text-muted mb-1">LINKEDIN</p>
+        <p class="text-sm text-ink">/in/ankith-kashyap</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="border-t border-line">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 font-mono text-xs text-faint">
+    <p>© <span id="year"></span> Ankith S Kashyap</p>
+    <p>Built with HTML, Tailwind CSS &amp; vanilla JS</p>
+  </div>
+</footer>
+
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Mobile menu
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const iconMenu = document.getElementById('iconMenu');
+  const iconClose = document.getElementById('iconClose');
+
+  menuBtn.addEventListener('click', () => {
+    const isOpen = !mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden');
+    iconMenu.classList.toggle('hidden');
+    iconClose.classList.toggle('hidden');
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      iconMenu.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Typing effect for the headline
+  const headlineText = "Embedded Software Engineer | Real-time Embedded C & Register-Level Driver Development";
+  const headlineEl = document.getElementById('typedHeadline');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function typeHeadline() {
+    if (prefersReduced) {
+      headlineEl.textContent = headlineText;
+      return;
+    }
+    let i = 0;
+    headlineEl.innerHTML = '<span class="caret">&nbsp;</span>';
+    const interval = setInterval(() => {
+      i++;
+      headlineEl.innerHTML = headlineText.slice(0, i) + '<span class="caret">&nbsp;</span>';
+      if (i >= headlineText.length) clearInterval(interval);
+    }, 22);
+  }
+  window.addEventListener('DOMContentLoaded', typeHeadline);
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Smooth scroll (native via CSS scroll-smooth handles anchors already,
+  // this just accounts for the fixed header offset)
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (targetId.length <= 1) return;
+      const target = document.querySelector(targetId);
+      if (!target) return;
+      e.preventDefault();
+      const headerOffset = 64;
+      const y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+      window.scrollTo({ top: y, behavior: prefersReduced ? 'auto' : 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
